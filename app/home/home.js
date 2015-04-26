@@ -12,26 +12,27 @@ angular.module('myApp.home', ['ngRoute', 'firebase'])
 }])
  
 // Home controller
-.controller('HomeCtrl', ['$scope','$firebaseSimpleLogin',function($scope,$firebaseSimpleLogin) {
+.controller('HomeCtrl', ['$scope','$firebaseAuth',function($scope,$firebaseAuth) {
 
   var firebaseObj = new Firebase("https://tutsplus-angularapp.firebaseio.com"); 
-  var loginObj = $firebaseSimpleLogin(firebaseObj);
+  var loginObj = $firebaseAuth(firebaseObj);
 
   $scope.user = {};
-    $scope.SignIn = function(e){ 
-       e.preventDefault();
-       var username = $scope.user.email;
-       var password = $scope.user.password;
-       loginObj.$login('password', {
-                  email: username,
-                  password: password
-              })
-              .then(function(user) {
-                  //Success callback
-                  console.log('Authentication successful');
-              }, function(error) {
-                  //Failure callback
-                  console.log('Authentication failure');
-              });
+  
+    $scope.SignIn = function(e) {
+        e.preventDefault();
+        var username = $scope.user.email;
+        var password = $scope.user.password;
+        loginObj.$authWithPassword({
+                email: username,
+                password: password
+            })
+            .then(function(user) {
+                //Success callback
+                console.log('Authentication successful');
+            }, function(error) {
+                //Failure callback
+                console.log('Authentication failure');
+            });
     }
 }]);
