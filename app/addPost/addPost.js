@@ -9,19 +9,23 @@ angular.module('myApp.addPost', ['ngRoute'])
   });
 }])
 
-.controller('AddPostCtrl', ['$scope','$firebase',function($scope,$firebase) {
-    $scope.AddPost = function(){
-  var title = $scope.article.title;
-        var post = $scope.article.post;
-  
-  var firebaseObj = new Firebase("https://tutsplus-angularapp.firebaseio.com/");
+.controller('AddPostCtrl', ['$scope','$firebase','CommonProp',function($scope,$firebase,CommonProp) {
+  $scope.AddPost = function() {
+      var title = $scope.article.title;
+      var post = $scope.article.post;
+   
+      var firebaseObj = new Firebase("https://tutsplus-angularapp.firebaseio.com/Articles");
       var fb = $firebase(firebaseObj);
-
-  fb.$push({ title: title,post: post}).then(function(ref) {
-      console.log(ref); 
-  }, function(error) {
-      console.log("Error:", error);
-  });
-
-    }
+   
+      fb.$push({
+          title: title,
+          post: post,
+          emailId: CommonProp.getUser()
+      }).then(function(ref) {
+          console.log(ref);
+      }, function(error) {
+          console.log("Error:", error);
+      });
+   
+  }
 }]);
