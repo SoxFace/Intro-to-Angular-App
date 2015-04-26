@@ -12,13 +12,13 @@ angular.module('myApp.home', ['ngRoute', 'firebase'])
 }])
  
 // Home controller
-.controller('HomeCtrl', ['$scope','$firebaseAuth',function($scope,$firebaseAuth) {
+.controller('HomeCtrl', ['$scope','$location','$firebaseAuth',function($scope,$location,$firebaseAuth) {
 
   var firebaseObj = new Firebase("https://tutsplus-angularapp.firebaseio.com"); 
   var loginObj = $firebaseAuth(firebaseObj);
 
   $scope.user = {};
-  
+
     $scope.SignIn = function(e) {
         e.preventDefault();
         var username = $scope.user.email;
@@ -30,6 +30,7 @@ angular.module('myApp.home', ['ngRoute', 'firebase'])
             .then(function(user) {
                 //Success callback
                 console.log('Authentication successful');
+                $location.path('/welcome');
             }, function(error) {
                 //Failure callback
                 console.log('Authentication failure');
